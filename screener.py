@@ -56,8 +56,12 @@ def screening(tickers, start, end, min_return=2.0, min_volume=500000):
                 'RevenueGrowth': float(f_row['RevenueGrowth']),
             })
 
-    return pd.DataFrame(results)
-    def calculate_score(row):
+   def screening(tickers, start, end, min_return=2.0, min_volume=500000):
+    # isi screening
+    return pd.DataFrame(results)  # ← penutup fungsi screening
+
+# ⬇️ Tempel DI SINI ya, di LUAR fungsi screening
+def calculate_score(row):
     return round(
         row['Return (x)'] * 0.4 +
         row['ROE'] * 0.2 +
