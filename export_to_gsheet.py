@@ -1,16 +1,16 @@
-import gspread
-from google.oauth2.service_account import Credentials
 import json
-import pandas as pd
+import gspread
 import streamlit as st
+from oauth2client.service_account import ServiceAccountCredentials
 
-def export_to_gsheet(df: pd.DataFrame, spreadsheet_name: str, worksheet_name: str = "Sheet1"):
-    # Load credential dari st.secrets
+def export_to_gsheet(df, spreadsheet_name, worksheet_name="Sheet1"):
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    
+    # Ambil dari secrets
     creds_dict = json.loads(st.secrets["GOOGLE_SERVICE_ACCOUNT_JSON"])
-    creds = Credentials.from_service_account_info(creds_dict)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
     client = gspread.authorize(creds)
 
-    # Buka spreadsheet
     sheet = client.open(spreadsheet_name)
 
     try:
@@ -20,6 +20,5 @@ def export_to_gsheet(df: pd.DataFrame, spreadsheet_name: str, worksheet_name: st
         pass
 
     worksheet = sheet.add_worksheet(title=worksheet_name, rows=str(len(df)+1), cols=str(len(df.columns)))
-
-    # Header + Data
-    worksheet.update([df.columns.values.tolist()] + df.values.tolist())
+    worksheet.insert_row(df.columns.tolist(), index=1)
+    worksheet.insert_rows(df.values.tolist(), row=2)
