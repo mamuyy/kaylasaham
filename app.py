@@ -85,3 +85,11 @@ try:
     st.write(watchlist)
 except:
     st.info("Watchlist masih kosong.")
+from export_to_gsheet import export_to_gsheet
+
+if st.button("📤 Export ke Google Sheet"):
+    try:
+        export_to_gsheet(df, "multibagger_test_sheet", "Portofolio Saham IDX")
+        st.success("✅ Data berhasil dikirim ke Google Sheet!")
+    except Exception as e:
+        st.error(f"❌ Gagal export: {str(e)}")
