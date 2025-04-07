@@ -1,7 +1,26 @@
+### FILE: screener.py
+
+import yfinance as yf
+import pandas as pd
+from rti_scraper import scrape_multiple
+
+def load_saham_list():
+    df = pd.read_csv("data/daftar_saham_syariah.csv")
+    return df['Kode'].tolist()
+
+def fetch_price_data(ticker, start, end):
+    try:
+        df = yf.download(ticker + ".JK", start=start, end=end, progress=False)
+        return df
+    except:
+        return None
+
+def fetch_fundamental_data_live(tickers):
+    return scrape_multiple(tickers)
+
 def screening(tickers, start, end, min_return=2.0, min_volume=500000):
     fundamental = fetch_fundamental_data_live(tickers)
 
-    # ✅ Validasi: pastikan hasil scraping gak kosong & kolom 'Kode' tersedia
     if not isinstance(fundamental, pd.DataFrame) or 'Kode' not in fundamental.columns:
         print("❌ Data fundamental kosong atau kolom 'Kode' hilang")
         return pd.DataFrame()
@@ -51,3 +70,11 @@ def screening(tickers, start, end, min_return=2.0, min_volume=500000):
             continue
 
     return pd.DataFrame(results)
+
+def calculate_score(row):
+    return round(
+        row['Return (x)'] * 0.4 +
+        row['ROE'] * 0.2 +
+        row['RevenueGrowth'] * 0.2 -
+        row['DER'] * 0.2, 2
+    )
