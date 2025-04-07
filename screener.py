@@ -2,10 +2,12 @@ import yfinance as yf
 import pandas as pd
 from rti_scraper import scrape_multiple
 
+# ✅ Load list saham dari CSV
 def load_saham_list():
     df = pd.read_csv("data/daftar_saham_syariah.csv")
     return df['Kode'].tolist()
 
+# ✅ Ambil data harga historis dari Yahoo Finance
 def fetch_price_data(ticker, start, end):
     try:
         df = yf.download(ticker + ".JK", start=start, end=end, progress=False)
@@ -13,16 +15,19 @@ def fetch_price_data(ticker, start, end):
     except:
         return None
 
+# ✅ Ambil data fundamental dari RTI
 def fetch_fundamental_data_live(tickers):
     return scrape_multiple(tickers)
 
+# ✅ Screening saham multibagger
 def screening(tickers, start, end, min_return=2.0, min_volume=500000):
     fundamental = fetch_fundamental_data_live(tickers)
     results = []
 
     for kode in tickers:
         df = fetch_price_data(kode, start, end)
-        if df is None or df.empty or len(df) < 100: continue
+        if df is None or df.empty or len(df) < 100:
+            continue
 
         harga_awal = df['Close'].iloc[0]
         harga_akhir = df['Close'].iloc[-1]
@@ -56,11 +61,9 @@ def screening(tickers, start, end, min_return=2.0, min_volume=500000):
                 'RevenueGrowth': float(f_row['RevenueGrowth']),
             })
 
-   def screening(tickers, start, end, min_return=2.0, min_volume=500000):
-    # isi screening
-    return pd.DataFrame(results)  # ← penutup fungsi screening
+    return pd.DataFrame(results)
 
-# ⬇️ Tempel DI SINI ya, di LUAR fungsi screening
+# ✅ Fungsi Skoring Multibagger
 def calculate_score(row):
     return round(
         row['Return (x)'] * 0.4 +
@@ -68,4 +71,3 @@ def calculate_score(row):
         row['RevenueGrowth'] * 0.2 -
         row['DER'] * 0.2, 2
     )
-
