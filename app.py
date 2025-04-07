@@ -9,7 +9,7 @@ import json
 st.set_page_config(page_title="IDX Multibagger Screener", layout="wide")
 
 st.title("🚀 IDX Multibagger Screener (Sektor + Skor + Watchlist)")
-st.markdown("Saring saham syariah potensial multibagger berdasarkan data fundamental 📊")
+st.markdown("Saring saham syariah potensial multibagger berdasarkan data fundamental dan historis 📊")
 
 start = datetime.datetime.now() - datetime.timedelta(days=5*365)
 end = datetime.datetime.now()
@@ -26,6 +26,7 @@ else:
 if st.button("🔍 Jalankan Screener"):
     with st.spinner("⏳ Memproses data..."):
         df = screening(tickers, start, end)
+
     if not df.empty:
         df["Skor"] = df.apply(calculate_score, axis=1)
         df = df.sort_values(by="Skor", ascending=False).reset_index(drop=True)
