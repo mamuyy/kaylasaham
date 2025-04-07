@@ -4,7 +4,6 @@ pandas
 matplotlib
 plotly
 openpyxl
-yfinance
-pandas
 numpy
-rti-scraper
+beautifulsoup4
+requests
