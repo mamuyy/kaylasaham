@@ -1,6 +1,7 @@
 import streamlit as st
 import datetime
 from screener import load_saham_list, screening, calculate_score
+from export_to_gsheet import export_to_gsheet
 import pandas as pd
 import plotly.graph_objects as go
 import yfinance as yf
@@ -14,6 +15,7 @@ st.markdown("Saring saham syariah potensial multibagger berdasarkan data fundame
 start = datetime.datetime.now() - datetime.timedelta(days=5*365)
 end = datetime.datetime.now()
 
+# Load data saham syariah dan sektor
 df_syariah = pd.read_csv("data/daftar_saham_syariah.csv")
 sektors = sorted(df_syariah["Sektor"].unique())
 selected_sektor = st.selectbox("🎯 Pilih Sektor", ["Semua"] + sektors)
@@ -60,9 +62,18 @@ if st.button("🔍 Jalankan Screener"):
                 else:
                     st.info(f"{selected} sudah ada di Watchlist.")
 
-        if st.button("💾 Export ke Excel"):
-            df.to_excel("multibagger_result.xlsx", index=False)
-            st.success("✅ Hasil disimpan sebagai multibagger_result.xlsx")
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("💾 Export ke Excel"):
+                df.to_excel("multibagger_result.xlsx", index=False)
+                st.success("✅ Hasil disimpan sebagai multibagger_result.xlsx")
+
+        with col2:
+            if st.button("📤 Export ke Google Sheet"):
+                with st.spinner("📤 Mengirim ke Google Sheet..."):
+                    export_to_gsheet(df, "multibagger_test_sheet", worksheet_name="Portofolio Saham IDX")
+                    st.success("✅ Data berhasil dikirim ke Google Sheet!")
+
     else:
         st.warning("⚠️ Tidak ada saham yang memenuhi kriteria.")
 
