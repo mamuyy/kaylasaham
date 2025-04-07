@@ -8,3 +8,5 @@ numpy
 beautifulsoup4
 requests
 tqdm
+gspread
+oauth2client
