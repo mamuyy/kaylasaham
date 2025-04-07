@@ -10,3 +10,4 @@ requests
 tqdm
 gspread
 oauth2client
+google-auth
