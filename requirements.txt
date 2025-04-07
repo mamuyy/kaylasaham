@@ -7,3 +7,4 @@ openpyxl
 numpy
 beautifulsoup4
 requests
+tqdm
