@@ -57,3 +57,11 @@ def screening(tickers, start, end, min_return=2.0, min_volume=500000):
             })
 
     return pd.DataFrame(results)
+    def calculate_score(row):
+    return round(
+        row['Return (x)'] * 0.4 +
+        row['ROE'] * 0.2 +
+        row['RevenueGrowth'] * 0.2 -
+        row['DER'] * 0.2, 2
+    )
+
