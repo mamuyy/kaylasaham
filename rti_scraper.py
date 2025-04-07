@@ -6,16 +6,16 @@ import time
 def scrape_rti_stock_data(ticker):
     url = f"https://www.rti.co.id/stock/detail/{ticker}"
     headers = {"User-Agent": "Mozilla/5.0"}
-    
+
     try:
         response = requests.get(url, headers=headers, timeout=10)
         if response.status_code != 200:
             return None
-        
+
         soup = BeautifulSoup(response.text, 'html.parser')
         fundamentals = {"Kode": ticker}
-
         rows = soup.select(".rt_table tr")
+
         for row in rows:
             cols = row.find_all("td")
             if len(cols) == 2:
@@ -45,5 +45,5 @@ def scrape_multiple(tickers):
         data = scrape_rti_stock_data(ticker)
         if data:
             results.append(data)
-        time.sleep(1.5)
+        time.sleep(1.5)  # biar gak diblok
     return pd.DataFrame(results)
