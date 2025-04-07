@@ -86,12 +86,12 @@ def screening(tickers, start, end, min_return=2.0, min_volume=500000):
             if (ret >= min_return and 
                 avg_vol >= min_volume and
                 metrics['EPS'] > 0 and
-                metrics['ROE'] > 10 and
-                metrics['DER'] < 2 and
-                metrics['PER'] < 25 and
-                metrics['PBV'] < 5 and
-                metrics['PEG'] < 2 and
-                metrics['NPM'] > 5):
+                metrics['ROE'] > 0 and
+                metrics['DER'] < 5 and
+                metrics['PER'] < 50 and
+                metrics['PBV'] < 10 and
+                metrics['PEG'] < 3 and
+                metrics['NPM'] > 0):
                 
                 result = {
                     'Kode': kode,
