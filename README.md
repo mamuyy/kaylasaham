@@ -1,28 +1,25 @@
-# 🚀 IDX Multibagger Screener — Streamlit App
+# 🚀 IDX Multibagger Screener
 
-Screener saham IDX berbasis **harga historis & data fundamental RTI**, fokus pada saham:
-- Syariah ✅
-- Likuid ✅
-- Potensi Multibagger (> 2x growth dalam 5 tahun) ✅
+[![Streamlit](https://img.shields.io/badge/Built%20with-Streamlit-red?logo=streamlit)](https://streamlit.io/)
+[![Python](https://img.shields.io/badge/Made%20with-Python%203.10-blue?logo=python)](https://www.python.org/)
+[![Status](https://img.shields.io/badge/Status-Active-brightgreen)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-📊 Dibangun dengan Python + Streamlit + Plotly
-
----
-
-## 🔍 Fitur Unggulan
-
-- 📈 Candlestick Chart Interaktif
-- 📤 Export hasil ke Excel
-- ⭐ Simpan saham favorit ke Watchlist
-- 🧠 Skoring Multibagger (Return, ROE, Growth)
-- 🔎 Filter berdasarkan Sektor
+Screener saham syariah Indonesia berbasis performa harga & data fundamental. Fokus deteksi **potensi multibagger (>200% return)** dalam 5 tahun ke depan 📈
 
 ---
 
-## 🛠 Cara Menjalankan
+## 🔍 Fitur Utama
+- ✅ **Filter saham syariah & likuid**
+- ✅ **Candlestick chart interaktif**
+- ✅ **Export hasil ke Excel**
+- ✅ **Watchlist saham favorit**
+- ✅ **Skor Multibagger (return, growth, ROE, DER)**
+- ✅ **Filter berdasarkan sektor**
 
-```bash
-git clone https://github.com/mamuyy/kaylasaham.git
-cd kaylasaham
-pip install -r requirements.txt
-streamlit run app.py
+---
+
+## 🧠 Formula Skor Multibagger
+
+```text
+Skor = Return (x) * 0.4 + ROE * 0.2 + Revenue Growth * 0.2 - DER * 0.2
